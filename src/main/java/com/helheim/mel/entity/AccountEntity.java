@@ -19,7 +19,6 @@ public class AccountEntity {
     private String username;
     private String password;
     private String email;
-    private boolean verified;
     private String address;
     private String phone;
 }
