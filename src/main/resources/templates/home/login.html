@@ -1,17 +1,71 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <title>ログイン</title>
 </head>
 <body>
 <h1>ログイン</h1>
-<form th:action="@{/}" th:object="${AccountForm}" method="post">
+<form th:action="@{/login}" th:object="${AccountForm}" method="post">
     ユーザー名かemail<input type="text" th:field="*{usernameOrEmail}"/><br>
     パスワード<input type="password" th:field="*{password}"/><br>
     <button type="submit">ログイン</button>
-    <div th:if="${errorMessage}" th:text="${errorMessage}"></div>
+    <div th:if="${loginErrorMessage}" th:text="${loginErrorMessage}"></div>
 </form>
 
+<button type="button" id="openBtn" style="background-color: #F7008C" >新規登録</button>
+
+<form id="registerModal" style="display: none"
+      th:action="@{/register}" th:object="${registerForm}" method="post">
+    <h2 style="font-weight: bold">新規登録</h2>
+
+    ユーザー名
+    <input type="text" id="username" th:field="*{username}"><br>
+    <div th:if="${usernameError}" th:text="${usernameError}" style="color:red"></div>
+
+    メールアドレス
+    <input type="text" id="email" th:field="*{email}"><br>
+    <div th:if="${emailError}" th:text="${emailError}" style="color:red"></div>
+
+    確認コード（権限持ってる人が知ってます）
+    <input type="text" id="dailyCode" name="dailyCode"><br>
+    <div th:if="${dailyCodeError}" th:text="${dailyCodeError}" style="color:red"></div>
+
+    パスワード
+    <input type="text" id="password" th:field="*{password}"><br>
+    <div th:if="${passwordError}" th:text="${passwordError}" style="color:red"></div>
+
+    パスワード再確認
+    <input type="text" id="checkPassword" name="checkPassword"><br>
+    <div th:if="${checkPasswordError}" th:text="${checkPasswordError}" style="color:red"></div>
+
+    (任意) 電話番号
+    <input type="text" id="phone" th:field="*{phone}"><br>
+    <div th:if="${phoneError}" th:text="${phoneError}" style="color:red"></div>
+
+    (任意) 住所
+    <input type="text" id="address" th:field="*{address}"><br>
+    <div th:if="${addressError}" style="color:red" th:text="${addressError}"></div>
+
+    <div th:if="${registerErrorMessage}" th:text="${registerErrorMessage}" style="color:#B00000"></div>
+
+    <button type="submit">登録</button>
+    <button type="button" id="closeBtn">閉じる</button>
+</form>
+
+<div id="showRegisterFlag" th:if="${showRegisterModal}"></div>
+
+<script>
+    const modal = document.getElementById('registerModal');
+    const openBtn = document.getElementById('openBtn');
+    const closeBtn = document.getElementById('closeBtn');
+
+    openBtn.addEventListener('click', () => modal.style.display = 'block');
+    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+
+    if(document.getElementById('showRegisterFlag')){
+        modal.style.display = 'block';
+    }
+</script>
 </body>
 </html>
