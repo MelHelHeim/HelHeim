@@ -73,6 +73,7 @@ public class AuthenticateController {
         }
         if (dailyCode == null || dailyCode.isEmpty() || !dailyCode.equals(DailyCode.getTokenToday())) {
             model.addAttribute("dailyCodeError", "コードが違います。");
+            error++;
         }
         if (form.getPhone().length() > 11){
             model.addAttribute("phoneError", "電話番号は11桁にしてください");
