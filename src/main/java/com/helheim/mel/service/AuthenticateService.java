@@ -1,5 +1,6 @@
 package com.helheim.mel.service;
 
+import com.helheim.mel.entity.AccountEntity;
 import com.helheim.mel.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +21,18 @@ public class AuthenticateService {
                 .or(() -> accountRepository.findByEmail(usernameOrEmail))
                 .map(account -> account.getPassword().equals(password))
                 .orElse(false);
+    }
+
+    public String resolveUsername(String usernameOrEmail){
+        return accountRepository.findByUsername(usernameOrEmail)
+                .or(() -> accountRepository.findByEmail(usernameOrEmail))
+                .map(com.helheim.mel.entity.AccountEntity::getUsername)
+                .orElse(null);
+    }
+
+    public AccountEntity resolveAccount(String usernameOrEmail){
+        return accountRepository.findByUsername(usernameOrEmail)
+                .or(() -> accountRepository.findByEmail(usernameOrEmail))
+                .orElseThrow(() -> new RuntimeException("アカウントが存在しません。"));
     }
 }

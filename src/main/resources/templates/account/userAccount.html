@@ -2,9 +2,67 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>アカウント情報</title>
 </head>
 <body>
+    <h1>アカウント情報</h1>
 
+<div th:if="${!editPage}">
+    <form th:action="@{/user-account/edit}" method="post" th:object="${accountForm}">
+        <button type="submit">編集</button><br>
+        ユーザー名:
+            <span th:text="*{username}"></span><br>
+        メールアドレス:
+            <span th:text="*{email}"></span><br>
+        パスワード:
+            <span id="hidePassword">・・・・・・</span>
+            <span id="showPassword" th:text="*{password}" style="display:none"></span>
+            <button type="button" onclick="togglePassword()">表示 / 非表示</button><br>
+        電話番号:
+            <span th:text="*{phone}"></span><br>
+        住所:
+            <span th:text="*{address}"></span><br>
+    </form>
+</div>
+<div th:if="${editPage}">
+    <form th:action="@{/user-account/input}" method="post" th:object="${accountForm}">
+        <button type="submit" th:formaction="@{/user-account}" th:formmethod="get">キャンセル</button><br>
+        ユーザー名:
+            <input type="text" th:field="*{username}">
+            <div th:if="${usernameError}" th:text="${usernameError}" style="color:red"></div><br>
+        メールアドレス:
+            <input type="text" th:field="*{email}">
+            <div th:if="${emailError}" th:text="${emailError}" style="color:red"></div><br>
+        パスワード:
+            <input type="text" th:field="*{password}">
+            <div th:if="${passwordError}" th:text="${passwordError}" style="color:red"></div><br>
+        パスワード再入力:
+            <input type="password" name="checkPassword">
+            <div th:if="${checkPasswordError}" th:text="${checkPasswordError}" style="color:red"></div><br>
+        電話番号
+            <input type="text" th:field="*{phone}">
+            <div th:if="${phoneError}" th:text="${phoneError}" style="color:red"></div><br>
+        住所
+            <input type="text" th:field="*{address}">
+            <div th:if="${addressError}" th:text="${addressError}" style="color:red"></div><br>
+        <button type="submit">完了</button><br>
+        <div th:if="${editErrorMessage}" th:text="${editErrorMessage}"></div>
+    </form>
+</div>
+
+<script>
+    function togglePassword() {
+        const hide = document.getElementById('hidePassword');
+        const show = document.getElementById('showPassword');
+
+        if (show.style.display === 'none'){
+            hide.style.display = 'none';
+            show.style.display = 'inline';
+        } else {
+            hide.style.display = 'inline';
+            show.style.display = 'none';
+        }
+    }
+</script>
 </body>
 </html>
